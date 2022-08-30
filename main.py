@@ -1,38 +1,41 @@
+
+# Kütüphaneler Tanımlandı
 from flask import Flask,request,render_template
 import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BOARD)
-realay_pin = 7
-realay_pin2 = 5
-GPIO.setup(realay_pin, GPIO.OUT)
-GPIO.setup(realay_pi2, GPIO.OUT)
 
+#Raspberry Pi pinlerine erişilip 12 numaralı (board numaralandırmalı) pin
+#Çıkış pini olarak tanımlandı
+GPIO.setmode(GPIO.BOARD)
+relay = 12
+GPIO.setup(relay, GPIO.OUT)
+
+# Flask nesenesi app değişkine üzerine çağrıldı
 app = Flask(__name__)
 
-@app.route("/")
-def home1():
+
+# Web Sayfası açıldığında görüntülenecek sayfa
+@app.route("/") 
+def main():
+    #Bu fonksiyon devreye girince sadece index.html dosyası render edildi
     return render_template("index.html")
-@app.route("/on1")
-def home2():
-    GPIO.output(realay_pin, GPIO.LOW)
+
+#Işık yakma butonuna basılınca yönlendirilecek olan sayfa 
+@app.route("/on")
+def ac():
+    #Bu fonksiyon devreye girince ışık açlıldı
+    GPIO.output(relay, GPIO.HIGH)
+    #Eğer her fonksiyonun sonuna index.html dosyası render edilmez ise sayfa boş kalır
     return render_template("index.html")
-@app.route("/off1")
-def home3():
-    GPIO.output(realay_pin, GPIO.HIGH)
+
+@app.route("/off")
+def kapa():
+    #Bu fonksiyon devreye girince ışık Kapandı
+    GPIO.output(relay, GPIO.LOW)
     
     return render_template("index.html")
 
-@app.route("/on2")
-def home23():
-    GPIO.output(realay_pin2, GPIO.LOW)
-    return render_template("index.html")
-@app.route("/off2")
-def home33():
-    GPIO.output(realay_pin2, GPIO.HIGH)
     
-    return render_template("index.html")
-
-
 if __name__ == '__main__':
-    app.run(host="192.168.43.90",debug=True)
+    app.run(host="192.168.1.28",debug=True, port=8000)  # Local IP nizi girin (hostname - I komutu ile bulabilirsiniz)
 
 
