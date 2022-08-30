@@ -4,7 +4,7 @@
 #### 2-	RPi.GPIO = sudo pip3 install RPi.GPIO
 
 
-# Ufak bi ayar
+# Ufak bi ayar (main.py dosyasından)
 
 Local IP nizi girin (hostname - I komutu ile bulabilirsiniz) 
 
